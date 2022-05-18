@@ -8,7 +8,7 @@ module.exports = () => {
   sequelize.sync().then(console.log("Connection etablished"))
 
   const Account = require('./account')(sequelize)
-  const Branchoffice = require('./branchofffice')(sequelize)
+  const Branchoffice = require('./branchoffice')(sequelize)
   const Customer = require('./customer')(sequelize)
   const Consultant = require('./consultant')(sequelize)
   const Card = require('./card')(sequelize)
