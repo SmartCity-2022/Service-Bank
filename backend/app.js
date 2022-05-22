@@ -1,11 +1,16 @@
 const express = require('express')
 const app = express()
-const port = 3000
+var cors = require('cors')
 
-app.get('/', (req, res) => {
-  res.send('Hello World!')
-})
+require('dotenv').config()
 
-app.listen(port, () => {
-  console.log(`Example app listening on port ${port}`)
+const models = require('./models')()
+
+app.use(cors())
+app.use(express.json())
+app.set('sequelize', models)
+app.use(require('./routes'))
+
+app.listen(process.env.API_PORT, () => {
+  console.log('Backend listening on:' + process.env.API_URL + process.env.API_PORT)
 })
