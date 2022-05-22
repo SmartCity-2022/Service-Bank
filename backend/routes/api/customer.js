@@ -3,18 +3,18 @@ var router = require('express').Router()
 router.get('/', async (req, res) => {
 
     try { 
-       let costumer = await req.app.get('sequelize').models.Costumer.findAll()
-       res.json(costumer).status(200)
+       let customer = await req.app.get('sequelize').models.Customer.findAll()
+       res.json(customer).status(200)
     }
     catch(error){
         res.sendStatus(401)
     }
 })
 
-router.get('/:id', async (req, res) => {
+router.get('/:customerId', async (req, res) => {
 
     try { 
-       let customer = await req.app.get('sequelize').models.Customer.findByPk(req.params.id)
+       let customer = await req.app.get('sequelize').models.Customer.findByPk(req.params.customerId)
        res.json(customer).status(200)
     }
     catch(error){
@@ -34,9 +34,9 @@ router.post('/', async (req, res) => {
     }
 })
 
-router.put('/:id', async (req, res) => {
+router.put('/:customerId', async (req, res) => {
     try {
-        let customer = await req.app.get('sequelize').models.Customer.findByPk(req.params.id)
+        let customer = await req.app.get('sequelize').models.Customer.findByPk(req.params.customerId)
         customer = await customer.update(req.body)
         return res.json(customer).status(200)
       }
@@ -45,10 +45,10 @@ router.put('/:id', async (req, res) => {
       }
 })
 
-router.delete('/:id', async (req, res) => {
+router.delete('/:customerId', async (req, res) => {
 
     try {
-        let customer = await req.app.get('sequelize').models.Customer.destroy({where: {id: req.params.id}})
+        let customer = await req.app.get('sequelize').models.Customer.destroy({where: {id: req.params.customerId}})
         res.sendStatus(200)
     }
     catch(error) {

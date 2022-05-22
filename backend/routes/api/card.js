@@ -3,7 +3,11 @@ var router = require('express').Router()
 router.get('/', async (req, res) => {
 
     try { 
-       let card = await req.app.get('sequelize').models.Card.findAll()
+       let card = await req.app.get('sequelize').models.Card.findAll({
+        where: {
+          AccountId:  req.params.accountId
+        }
+      })
        res.json(card).status(200)
     }
     catch(error){
@@ -23,6 +27,8 @@ router.get('/:id', async (req, res) => {
 })
 
 router.post('/', async (req, res) => {
+
+    req.body.AccountId = req.params.accountId
 
     try {
         let card = await req.app.get('sequelize').models.Card.create(req.body)

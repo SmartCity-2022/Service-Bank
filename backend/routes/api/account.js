@@ -1,12 +1,13 @@
 var router = require('express').Router()
 
 router.get('/', async (req, res) => {
-
+    
     try { 
        let account = await req.app.get('sequelize').models.Account.findAll()
        res.json(account).status(200)
     }
     catch(error){
+        console.log(error)
         res.sendStatus(401)
     }
 })
@@ -34,17 +35,6 @@ router.post('/', async (req, res) => {
         console.log(error)
         res.sendStatus(401)
     }
-})
-
-router.put('/:id', async (req, res) => {
-    try {
-        let account = await req.app.get('sequelize').models.Account.findByPk(req.params.id)
-        account = await account.update(req.body)
-        return res.json(account).status(200)
-      }
-      catch(error) {
-        res.sendStatus(401)
-      }
 })
 
 router.delete('/:id', async (req, res) => {
