@@ -18,5 +18,5 @@ module.exports = (sequelize) => {
       }
     }
   )
-  return Costumer
+  return Customer
 }

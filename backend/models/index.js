@@ -1,9 +1,9 @@
 const {Sequelize, AccessDeniedError} = require('sequelize')
-const config = require('../config')
+require('dotenv').config()
 
 module.exports = () => {
   let sequelize
-  sequelize = new Sequelize(config.databaseUrl)
+  sequelize = new Sequelize(process.env.DATABASE_URL)
 
   sequelize.sync().then(console.log("Connection etablished"))
 
