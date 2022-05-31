@@ -1,9 +1,13 @@
-var router = require('express').Router()
+var router = require('express').Router({mergeParams: true})
 
 router.get('/', async (req, res) => {
     
     try { 
-       let account = await req.app.get('sequelize').models.Account.findAll()
+       let account = await req.app.get('sequelize').models.Account.findAll({
+        where: {
+            CustomerId:  req.params.customerId
+        }
+      })
        res.json(account).status(200)
     }
     catch(error){
@@ -15,8 +19,14 @@ router.get('/', async (req, res) => {
 router.get('/:id', async (req, res) => {
 
     try { 
-       let account = await req.app.get('sequelize').models.Account.findByPk(req.params.id)
-       res.json(account).status(200)
+       let account = await req.app.get('sequelize').models.Account.findOne({
+        where: {
+          id:  req.params.id,
+          CustomerId: req.params.customerId
+        }
+       })
+
+        res.json(account).status(200)
     }
     catch(error){
         res.sendStatus(401)
@@ -40,7 +50,12 @@ router.post('/', async (req, res) => {
 router.delete('/:id', async (req, res) => {
 
     try {
-        let account = await req.app.get('sequelize').models.Account.destroy({where: {id: req.params.id}})
+        let account = await req.app.get('sequelize').models.Account.destroy({
+            where: {
+              id:  req.params.id,
+              CustomerId: req.params.customerId
+            }
+        })
         res.sendStatus(200)
     }
     catch(error) {

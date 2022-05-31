@@ -1,4 +1,4 @@
-var router = require('express').Router()
+var router = require('express').Router({mergeParams: true})
 
 router.get('/', async (req, res) => {
 
@@ -7,7 +7,7 @@ router.get('/', async (req, res) => {
         where: {
           AccountId:  req.params.accountId
         }
-      })
+       })
        res.json(card).status(200)
     }
     catch(error){
@@ -18,7 +18,12 @@ router.get('/', async (req, res) => {
 router.get('/:id', async (req, res) => {
 
     try { 
-       let card = await req.app.get('sequelize').models.Card.findByPk(req.params.id)
+       let card = await req.app.get('sequelize').models.Card.findOne({
+        where: {
+          id:  req.params.id,
+          AccountId: req.params.accountId
+        }
+       })
        res.json(card).status(200)
     }
     catch(error){
@@ -42,7 +47,12 @@ router.post('/', async (req, res) => {
 
 router.put('/:id', async (req, res) => {
     try {
-        let card = await req.app.get('sequelize').models.Card.findByPk(req.params.id)
+        let card = await req.app.get('sequelize').models.Card.findOne({
+            where: {
+              id:  req.params.id,
+              AccountId: req.params.accountId
+            }
+        })
         card = await card.update(req.body)
         return res.json(card).status(200)
       }
@@ -54,7 +64,12 @@ router.put('/:id', async (req, res) => {
 router.delete('/:id', async (req, res) => {
 
     try {
-        let card = await req.app.get('sequelize').models.Card.destroy({where: {id: req.params.id}})
+        let card = await req.app.get('sequelize').models.Card.destroy({
+            where: {
+              id:  req.params.id,
+              AccountId: req.params.accountId
+            }
+        })
         res.sendStatus(200)
     }
     catch(error) {
