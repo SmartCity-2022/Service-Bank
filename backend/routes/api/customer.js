@@ -1,4 +1,5 @@
 var router = require('express').Router()
+const auth = require('../auth')
 
 router.get('/', async (req, res) => {
 
@@ -11,7 +12,7 @@ router.get('/', async (req, res) => {
     }
 })
 
-router.get('/:customerId', async (req, res) => {
+router.get('/:customerId', auth.required, async (req, res) => {
 
     try { 
        let customer = await req.app.get('sequelize').models.Customer.findByPk(req.params.customerId)
@@ -22,7 +23,7 @@ router.get('/:customerId', async (req, res) => {
     }
 })
 
-router.post('/', async (req, res) => {
+router.post('/', auth.required, async (req, res) => {
 
     try {
         let customer = await req.app.get('sequelize').models.Customer.create(req.body)
@@ -34,7 +35,7 @@ router.post('/', async (req, res) => {
     }
 })
 
-router.put('/:customerId', async (req, res) => {
+router.put('/:customerId', auth.required, async (req, res) => {
     try {
         let customer = await req.app.get('sequelize').models.Customer.findByPk(req.params.customerId)
         customer = await customer.update(req.body)
@@ -45,10 +46,10 @@ router.put('/:customerId', async (req, res) => {
       }
 })
 
-router.delete('/:customerId', async (req, res) => {
+router.delete('/:customerId', auth.required, async (req, res) => {
 
     try {
-        let customer = await req.app.get('sequelize').models.Customer.destroy({where: {id: req.params.customerId}})
+        await req.app.get('sequelize').models.Customer.destroy({where: {id: req.params.customerId}})
         res.sendStatus(200)
     }
     catch(error) {

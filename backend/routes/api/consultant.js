@@ -48,7 +48,7 @@ router.put('/:id', async (req, res) => {
 router.delete('/:id', async (req, res) => {
 
     try {
-        let consultant = await req.app.get('sequelize').models.Consultant.destroy({where: {id: req.params.id}})
+        await req.app.get('sequelize').models.Consultant.destroy({where: {id: req.params.id}})
         res.sendStatus(200)
     }
     catch(error) {

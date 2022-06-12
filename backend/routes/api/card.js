@@ -1,13 +1,14 @@
-var router = require('express').Router()
+var router = require('express').Router({mergeParams: true})
+const auth = require('../auth')
 
-router.get('/', async (req, res) => {
+router.get('/', auth.required, async (req, res) => {
 
     try { 
-       let card = await req.app.get('sequelize').models.Card.findAll({
+       let card = await req.app.get('sequelize').models.Card.findOne({
         where: {
           AccountId:  req.params.accountId
         }
-      })
+       })
        res.json(card).status(200)
     }
     catch(error){
@@ -15,18 +16,25 @@ router.get('/', async (req, res) => {
     }
 })
 
-router.get('/:id', async (req, res) => {
+/*
+router.get('/:id', auth.required, async (req, res) => {
 
     try { 
-       let card = await req.app.get('sequelize').models.Card.findByPk(req.params.id)
+       let card = await req.app.get('sequelize').models.Card.findOne({
+        where: {
+          id:  req.params.id,
+          AccountId: req.params.accountId
+        }
+       })
        res.json(card).status(200)
     }
     catch(error){
         res.sendStatus(401)
     }
 })
+*/
 
-router.post('/', async (req, res) => {
+router.post('/', auth.required, async (req, res) => {
 
     req.body.AccountId = req.params.accountId
 
@@ -40,21 +48,15 @@ router.post('/', async (req, res) => {
     }
 })
 
-router.put('/:id', async (req, res) => {
-    try {
-        let card = await req.app.get('sequelize').models.Card.findByPk(req.params.id)
-        card = await card.update(req.body)
-        return res.json(card).status(200)
-      }
-      catch(error) {
-        res.sendStatus(401)
-      }
-})
-
-router.delete('/:id', async (req, res) => {
+router.delete('/:id', auth.required, async (req, res) => {
 
     try {
-        let card = await req.app.get('sequelize').models.Card.destroy({where: {id: req.params.id}})
+        await req.app.get('sequelize').models.Card.destroy({
+            where: {
+              id:  req.params.id,
+              AccountId: req.params.accountId
+            }
+        })
         res.sendStatus(200)
     }
     catch(error) {

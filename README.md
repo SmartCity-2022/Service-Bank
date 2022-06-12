@@ -8,4 +8,5 @@ Backend:<br>
     API_URL="http://localhost:"<br>
     API_PORT=8080<br>
     RABBITMQ_URL="amqp://localhost:15672"<br>
-    EXCHANGE="exchange"<br>
+    RABBITMQ_EXCHANGE="exchange"<br>
+    MAINHUB_URL=""<br>

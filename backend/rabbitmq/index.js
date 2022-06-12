@@ -4,6 +4,7 @@ require('dotenv').config()
 
 const connection = amqp.connect(process.env.RABBITMQ_URL, (error0, connection) => {
   if (error0) throw error0;
+
   return connection;
 });
 
@@ -11,25 +12,41 @@ function getConnection() {
   return connection
 }
 
-async function listen(queueName, routingKey, callback){
+async function listen(queueName, routingKey, callback) {
+  try {
+    const connection = await getConnection()
+    const channel = await connection.createChannel()
 
-    try {
+    await channel.assertExchange(process.env.RABBITMQ_EXCHANGE, "topic", {durable: true})
 
-        const connection = await getConnection()
-        const channel = await connection.createChannel()
+    const queue = await channel.assertQueue(queueName, {durable: true, exclusive: false, autoDelete: true})
 
-        await channel.assertExchange(process.env.EXCHANGE, "topic", {durable: true})
+    await channel.bindQueue(queue.queue, process.env.RABBITMQ_EXCHANGE, routingKey)
 
-        const queue = await channel.assertQueue("Bank", {durable: true, exclusive: true})
-        await channel.bindQueue(queue.queue, process.env.EXCHANGE, routingKey)
-
-        await channel.consume(queue.queue, (message) => {
-            callback(message.content.toString())
-        })
-    }
-    catch(error){
-        console.log(error)
-    }
+    await channel.consume(queue.queue, (message) => {
+      console.log("[RabbitMQ] consumed '" + message.content.toString() + "' from '" + message.fields.routingKey + "'")
+      callback(message.content.toString())
+      channel.ack(message)
+    })
+  }
+  catch(error) {
+    console.log(error)
+  }
 }
 
-module.exports = {getConnection, receive}
+async function publish(routingKey, payload) {
+  try {
+    const connection = await getConnection()
+    const channel = await connection.createChannel()
+  
+    await channel.assertExchange(process.env.RABBITMQ_EXCHANGE, "topic", {durable: true})
+    
+    channel.publish(process.env.RABBITMQ_EXCHANGE, routingKey, Buffer.from(payload))
+    console.log("[RabbitMQ] published '" + payload + "' at '" + routingKey + "'")
+  }
+  catch(error) {
+    console.log(error)
+  }
+}
+
+module.exports = {getConnection, listen, publish}
