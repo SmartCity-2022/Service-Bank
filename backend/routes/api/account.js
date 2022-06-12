@@ -1,6 +1,7 @@
 var router = require('express').Router({mergeParams: true})
+const auth = require('../auth')
 
-router.get('/', async (req, res) => {
+router.get('/', auth.required, async (req, res) => {
     
     try { 
        let account = await req.app.get('sequelize').models.Account.findAll({
@@ -16,13 +17,13 @@ router.get('/', async (req, res) => {
     }
 })
 
-router.get('/:id', async (req, res) => {
+router.get('/:id', auth.required, async (req, res) => {
 
     try { 
        let account = await req.app.get('sequelize').models.Account.findOne({
         where: {
           id:  req.params.id,
-          CustomerId: req.params.customerId
+          CustomerId: req.customer.id
         }
        })
 
@@ -33,9 +34,9 @@ router.get('/:id', async (req, res) => {
     }
 })
 
-router.post('/', async (req, res) => {
+router.post('/', auth.required, async (req, res) => {
 
-    req.body.CustomerId = req.params.customerId
+    req.body.CustomerId = req.customer.id
 
     try {
         let account = await req.app.get('sequelize').models.Account.create(req.body)
@@ -47,13 +48,13 @@ router.post('/', async (req, res) => {
     }
 })
 
-router.delete('/:id', async (req, res) => {
+router.delete('/:id', auth.required, async (req, res) => {
 
     try {
-        let account = await req.app.get('sequelize').models.Account.destroy({
+        await req.app.get('sequelize').models.Account.destroy({
             where: {
               id:  req.params.id,
-              CustomerId: req.params.customerId
+              CustomerId: req.customer.id
             }
         })
         res.sendStatus(200)
