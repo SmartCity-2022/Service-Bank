@@ -1,17 +1,34 @@
+import './index.css';
+
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
+
+import Navbar from './components/NavBar'
+
+import Accounts from './views/Accounts';
+import AccountDetails from './views/AccountDetails';
+import Transactions from './views/Transactions';
+import NewTransaction from './views/NewTransaction';
+import Branchoffices from './views/Branchoffices';
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import './index.css';
-import Accounts from './views/Accounts';
-import reportWebVitals from './reportWebVitals';
+import { ThemeProvider } from '@emotion/react';
+import theme from './theme';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
+
 root.render(
   <React.StrictMode>
-    <Accounts />
+    <ThemeProvider theme={theme}>
+      <BrowserRouter>
+        <Navbar/>
+        <Routes>
+          <Route path = "/" element = {<Accounts/>}/>
+          <Route path = "/konto/:id" element = {<AccountDetails/>}/>
+          <Route path = "/umsaetze" element = {<Transactions/>}/>
+          <Route path = "/ueberweisung" element = {<NewTransaction/>}/>
+          <Route path = "/filialen" element = {<Branchoffices/>}/>
+        </Routes>
+      </BrowserRouter>
+    </ThemeProvider>
   </React.StrictMode>
 );
-
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-reportWebVitals();
