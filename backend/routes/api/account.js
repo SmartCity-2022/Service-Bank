@@ -6,7 +6,7 @@ router.get('/', auth.required, async (req, res) => {
     try { 
        let account = await req.app.get('sequelize').models.Account.findAll({
         where: {
-            CustomerId:  req.params.customerId
+            CustomerId:  req.customer.id
         }
       })
        res.json(account).status(200)
