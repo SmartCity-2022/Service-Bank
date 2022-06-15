@@ -10,3 +10,7 @@ Backend:<br>
     RABBITMQ_URL="amqp://localhost:15672"<br>
     RABBITMQ_EXCHANGE="exchange"<br>
     MAINHUB_URL=""<br>
+
+FRONTEND:<br>
+  .env;<br>
+    REACT_APP_API_URL="http://localhost:8080/api"

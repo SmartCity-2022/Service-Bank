@@ -1,9 +1,15 @@
 const axios = require('axios')
 const {verify, TokenExpiredError} = require('jsonwebtoken')
 const {ValidationError} = require('sequelize')
+require('dotenv').config()
 
 module.exports.required = async(req, res, next) => {
-    
+  
+  if(process.env.MODE === 'develop'){
+    req.customer = await req.app.get("sequelize").models.Customer.findOne({where: {id: 1}})
+    return next()
+  }
+
   if(!req.cookies)
     return res.status(401).json({error: "Missing cookies"})
     
