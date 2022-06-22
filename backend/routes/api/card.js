@@ -16,31 +16,23 @@ router.get('/', auth.required, async (req, res) => {
     }
 })
 
-/*
-router.get('/:id', auth.required, async (req, res) => {
-
-    try { 
-       let card = await req.app.get('sequelize').models.Card.findOne({
-        where: {
-          id:  req.params.id,
-          AccountId: req.params.accountId
-        }
-       })
-       res.json(card).status(200)
-    }
-    catch(error){
-        res.sendStatus(401)
-    }
-})
-*/
-
 router.post('/', auth.required, async (req, res) => {
 
     req.body.AccountId = req.params.accountId
+    let card = await req.app.get('sequelize').models.Card.findOne({
+        where: {
+          AccountId:  req.params.accountId
+        }
+    })
 
     try {
-        let card = await req.app.get('sequelize').models.Card.create(req.body)
-        res.json(card).status(201)
+        if(card){
+            res.sendStatus(401)
+        }
+        else {
+            let card = await req.app.get('sequelize').models.Card.create(req.body)
+            res.json(card).status(201)
+        }
       }
       catch(error) {
         console.log(error)
