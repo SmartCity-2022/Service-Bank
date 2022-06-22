@@ -6,8 +6,6 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import Button from '@mui/material/Button';
 
-const pages = ['Meine Konten', 'Filialen', 'Berater'];
-
 const NavBar = () => {
 
   return (
@@ -32,14 +30,8 @@ const NavBar = () => {
             SMARTCITY-BANK
           </Typography>
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
-            {pages.map((page) => (
-              <Button
-                key={page}
-                sx={{ my: 2, color: 'white', display: 'block' }}
-              >
-                {page}
-              </Button>
-            ))}
+            <Button href={"/konto"} sx={{ my: 2, color: 'white', display: 'block' }}>Meine Konten</Button>
+            <Button href={"/filialen"} sx={{ my: 2, color: 'white', display: 'block' }}>Filialen</Button>
           </Box>
         </Toolbar>
       </Container>
