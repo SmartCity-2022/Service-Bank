@@ -6,14 +6,15 @@ module.exports = (sequelize) => {
     {
       IBAN: {
         type: DataTypes.STRING,
-        allowNull: false
+        allowNull: false,
+        unique: true
       },
       name: {
         type: DataTypes.STRING,
         allowNull: false
       },
       credit: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.FLOAT,
         allowNull: false
       }
     }

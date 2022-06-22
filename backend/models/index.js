@@ -20,8 +20,8 @@ module.exports = () => {
 
   Customer.hasMany(Account)
 
-  Transaction.belongsTo(Account, {as: 'SenderID'})
-  Transaction.belongsTo(Account, {as: 'ReceiverID'})
+  Transaction.belongsTo(Account, {as: 'Sender'})
+  Transaction.belongsTo(Account, {as: 'Receiver'})
 
   Card.belongsTo(Account)
 
