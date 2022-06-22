@@ -4,15 +4,15 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom';
 
 import Navbar from './components/NavBar'
 
+import StartPage from './views/StartPage';
 import Accounts from './views/Accounts';
 import AccountDetails from './views/AccountDetails';
-import Transactions from './views/Transactions';
-import NewTransaction from './views/NewTransaction';
 import Branchoffices from './views/Branchoffices';
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { ThemeProvider } from '@emotion/react';
 import theme from './theme';
+import CheckAuthPage from './views/CheckAuth';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
@@ -22,10 +22,9 @@ root.render(
       <BrowserRouter>
         <Navbar/>
         <Routes>
-          <Route path = "/" element = {<Accounts/>}/>
-          <Route path = "/konto/:id" element = {<AccountDetails/>}/>
-          <Route path = "/umsaetze" element = {<Transactions/>}/>
-          <Route path = "/ueberweisung" element = {<NewTransaction/>}/>
+          <Route path = "/" element = {<StartPage/>}/>
+          <Route path = "/konto" element = {<CheckAuthPage page={<Accounts/>}/>}/>
+          <Route path = "/konto/:id" element = {<CheckAuthPage page={<AccountDetails/>}/>}/>
           <Route path = "/filialen" element = {<Branchoffices/>}/>
         </Routes>
       </BrowserRouter>
