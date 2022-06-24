@@ -41,6 +41,7 @@ function AccountDetails() {
 
   const getTransactions = async () => {
     await axios.get(process.env.REACT_APP_API_URL+"/account/"+id+"/transaction", []).then(response => {
+      response.data.reverse()
       setTransactions(response.data);
     })
   }
