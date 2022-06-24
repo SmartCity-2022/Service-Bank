@@ -30,7 +30,26 @@ module.exports.required = async(req, res, next) => {
   }
   catch(error) {
     if(error instanceof TokenExpiredError) {
-      return res.status(500).json(error)
+      var refreshUrl = process.env.MAINHUB_URL + "/api/token"
+      var response = await axios.post(refreshUrl, {token: refreshToken})
+
+      try {
+        let payload = verify(response.data.accessToken, process.env.SECRET)
+        res.cookie("accessToken", response.data.accessToken, {
+          domain: ".smartcity.w-mi.de"
+        })
+
+        let customer = await req.app.get("sequelize").models.Customer.findOne({where: {email: payload.email}})
+        if(!customer) {
+          customer = await req.app.get("sequelize").models.Customer.create({email: payload.email})
+        }
+        req.customer = customer
+        
+        return next()
+      }
+      catch(err) {
+        res.send(err).status(401)
+      }
     }
     else if(error instanceof ValidationError) {
       return res.status(500).json(error)
