@@ -30,8 +30,16 @@ router.post('/', auth.required, async (req, res) => {
     })
 
     let receiver = await req.app.get('sequelize').models.Account.findOne({
-        where: { id: req.body.ReceiverId }
+        where: { iban: req.body.ReceiverId }
     })
+
+    console.log(receiver.id)
+    console.log(receiver.id)
+    console.log(receiver.id)
+    console.log(receiver.id)
+    console.log(receiver.id)
+
+    req.body.ReceiverId = receiver.id
 
     try {
         let transaction = await req.app.get('sequelize').models.Transaction.create(req.body)

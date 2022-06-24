@@ -1,4 +1,4 @@
-var router = require('express').Router({mergeParams: true})
+const router = require('express').Router({mergeParams: true})
 const auth = require('../auth')
 
 router.get('/', auth.required, async (req, res) => {
