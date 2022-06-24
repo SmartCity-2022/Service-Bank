@@ -33,12 +33,6 @@ router.post('/', auth.required, async (req, res) => {
         where: { iban: req.body.ReceiverId }
     })
 
-    console.log(receiver.id)
-    console.log(receiver.id)
-    console.log(receiver.id)
-    console.log(receiver.id)
-    console.log(receiver.id)
-
     req.body.ReceiverId = receiver.id
 
     try {
