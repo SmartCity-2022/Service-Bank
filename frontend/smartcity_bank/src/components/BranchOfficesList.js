@@ -1,3 +1,4 @@
+import '../index.css'
 import * as React from 'react';
 
 import Paper from '@mui/material/Paper';
@@ -12,6 +13,7 @@ import theme from '../theme'
 
 export default function BranchOfficesList(props) {
   return (
+    <div className='content'>
     <ThemeProvider theme={theme}>
     <TableContainer elevation={0} sx = {{padding: 5}} component={Paper}>
       <Table sx={{ minWidth: 650 }} size="large">
@@ -34,5 +36,6 @@ export default function BranchOfficesList(props) {
       </Table>
     </TableContainer>
     </ThemeProvider>
+    </div>
   );
 }
