@@ -12,7 +12,7 @@ const Branchoffices = () => {
   useEffect(() => { getBranches() }, [])
 
   const getBranches = async () => {
-    await axios.get("http://localhost:8080/api/branchoffice", []).then(response => {
+    await axios.get(process.env.REACT_APP_API_URL+"/branchoffice", []).then(response => {
         setBranches(response.data);
     })
   }
